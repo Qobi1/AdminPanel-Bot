@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'telegrambot',
     'app1',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
@@ -48,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'webappbot.urls'
@@ -140,6 +142,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = 'ctg_list'
 LOGOUT_REDIRECT_URL = 'index'
 
+
+CSRF_TRUSTED_ORIGINS = ['https://web-production-4334.up.railway.app/']
 
 SESSION_COOKIE_AGE = 60 * 15  # Automatically logs out after 15 minutes
 SESSION_SAVE_EVERY_REQUEST = True
