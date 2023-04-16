@@ -1,0 +1,65 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block context %}
+    {% if messages %}
+		<div class="messages">
+		{% for message in messages %}
+			<div class="alert {% if message.tags %}alert-{{ message.tags }}"{% endif %}>
+				{{ message }}
+			</div>
+		{% endfor %}
+		</div>
+	{% endif %}
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Message List</h4>
+                    <div class="text-right">
+                        <form class="navbar-form navbar-left navbar-search-form" role="search" method="post">
+                            {% csrf_token %}
+                        </form>
+                        <a href="{% url 'message_add' %}">
+                            <button class="btn btn-success btn-fill btn-wd">Send Message</button>
+                        </a>
+                    </div>
+            <div class="card-content table-responsive table-full-width">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th class="text-center"><strong>#</strong></th>
+                        <th><strong>Text</strong></th>
+                        <th><strong>Created Time</strong></th>
+                        <th class="text-right"><strong>Actions</strong></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for msg in msgs %}
+                        <tr>
+                            <td class="text-center">{{ forloop.counter }}</td>
+                            <td>{{ msg.text }}</td>
+                            <td>{{ msg.created_at }}</td>
+                            <td class="td-actions text-right">
+                                <a href="{% url 'message_details'  msg.id %}" rel="tooltip" title="View Profile"
+                                   class="btn btn-info btn-simple btn-xs">
+                                    <i class="ti-user"></i>
+                                </a>
+{#                                <a href="{% url 'message_edit' msg.id %}" rel="tooltip" title="Edit Profile"#}
+{#                                   class="btn btn-success btn-simple btn-xs">#}
+{#                                    <i class="ti-pencil-alt"></i>#}
+{#                                </a>#}
+                                <a href="{% url 'message_delete' msg.id %}"
+                                   onclick="confirm_product_delete({{ msg.id }})" rel="tooltip" title="Remove"
+                                   class="btn btn-danger btn-simple btn-xs">
+                                    <i class="ti-close"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

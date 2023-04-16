@@ -1,0 +1,23 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block context %}
+    <form enctype="multipart/form-data" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <a href="{% url 'product_list' %}">
+            <button type="button" class="btn btn-wd btn-default btn-fill btn-move-left">
+            <span class="btn-label">
+                <i class="ti-angle-left"></i>
+            </span>
+                Back
+            </button>
+        </a>
+        <a href="{% url 'product_add' %}">
+            <button type="submit" class="btn btn-danger btn-fill btn-wd">Save</button>
+        </a>
+    </form>
+
+    <div style="margin-bottom: 80px"></div>
+
+{% endblock %}
+
