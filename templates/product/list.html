@@ -26,11 +26,11 @@
                             <span class="btn-label">
                                 <i class="ti-search"></i>
                             </span>
-                                Search
+                                Qidirish
                             </button>
                         </form>
                         <a href="{% url 'product_add' %}">
-                            <button class="btn btn-success btn-fill btn-wd">Add Product</button>
+                            <button class="btn btn-success btn-fill btn-wd">Qo'shish</button>
                         </a>
                     </div>
 
@@ -51,14 +51,14 @@
                     <thead>
                     <tr>
                         <th class="text-center"><strong>#</strong></th>
-                        <th><strong>Category</strong></th>
-                        <th><strong>Product</strong></th>
-                        <th class="text-right"><strong>Price</strong></th>
+                        <th><strong>Kategoriya</strong></th>
+                        <th><strong>Mahsulot</strong></th>
+                        <th class="text-right"><strong>Narxi</strong></th>
                         <th class="text-right"><strong>Actions</strong></th>
                     </tr>
                     </thead>
                     <tbody>
-                    {% for product in products %}
+                    {% for product in page_obj %}
                         <tr>
                             <td class="text-center">{{ forloop.counter }}</td>
                             <td>{{ product.ctg.name }}</td>
@@ -83,6 +83,23 @@
                     {% endfor %}
                     </tbody>
                 </table>
+                <div class="pagination">
+                    <span class="step-links">
+                        {% if page_obj.has_previous %}
+                            <a href="?page=1">&laquo; first</a>
+                            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                        {% endif %}
+
+                        <span class="current">
+                            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                        </span>
+
+                        {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}">next</a>
+                            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>
             </div>
         </div>
     </div>

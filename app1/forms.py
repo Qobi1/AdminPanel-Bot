@@ -3,11 +3,11 @@ from .models import *
 
 
 class ProductForm(forms.ModelForm):
-    ctg = forms.ModelChoiceField(queryset=Category.objects.all(), widget=forms.Select(attrs={'class': "form-control", 'style': 'max-width: 40em; border-color: black'}), label='Category')
-    image = forms.ImageField(widget=forms.ClearableFileInput(attrs={'class': "form-control", 'style': 'max-width: 40em; border-color: black'}))
-    name = forms.CharField(max_length=256, widget=forms.TextInput(attrs={'class': 'form-control', 'style': 'max-width: 40em; border-color: black'}))
-    description = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'style': 'max-width: 40em; border-color: black'}))
-    price = forms.IntegerField(widget=forms.NumberInput(attrs={'class': "form-control", 'style': 'max-width: 40em; border-color: black'}), label='Price $')
+    ctg = forms.ModelChoiceField(queryset=Category.objects.all(), widget=forms.Select(attrs={'class': "form-control", 'style': 'max-width: 40em; border-color: black'}), label='Kategoriya')
+    image = forms.ImageField(widget=forms.ClearableFileInput(attrs={'class': "form-control", 'style': 'max-width: 40em; border-color: black'}), label='Rasm')
+    name = forms.CharField(max_length=256, widget=forms.TextInput(attrs={'class': 'form-control', 'style': 'max-width: 40em; border-color: black'}), label='Nomi')
+    description = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'style': 'max-width: 40em; border-color: black'}), label='Malumot')
+    price = forms.IntegerField(widget=forms.NumberInput(attrs={'class': "form-control", 'style': 'max-width: 40em; border-color: black'}), label='Narxi')
 
     class Meta:
         model = Product
@@ -15,7 +15,7 @@ class ProductForm(forms.ModelForm):
 
 
 class CategoryForm(forms.ModelForm):
-    name = forms.CharField(max_length=256, widget=forms.TextInput(attrs={'class': 'form-control', 'style': 'max-width: 40em; border-color: black'}))
+    name = forms.CharField(max_length=256, widget=forms.TextInput(attrs={'class': 'form-control', 'style': 'max-width: 40em; border-color: black'}), label='Nomi')
 
     class Meta:
         model = Category

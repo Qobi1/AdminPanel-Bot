@@ -13,7 +13,7 @@
                             {% csrf_token %}
                             <div class="input-group">
                                 <span class="input-group-addon"><i></i></span>
-                                <input type="text" value="" class="form-control" placeholder="Search name/phone/company" name="search">
+                                <input type="text" value="" class="form-control" placeholder="Search username/phone" name="search">
                             </div>
                             <button type="submit" class="btn btn-default btn-fill btn-wd">
                             <span class="btn-label">
@@ -41,13 +41,13 @@
                     <thead>
                     <tr>
                         <th class="text-center"><strong>#</strong></th>
-                        <th class="text-center"><strong>Name</strong></th>
+                        <th class="text-center"><strong>Username</strong></th>
                         <th class="text-center"><strong>Phone</strong></th>
                         <th class="text-right"><strong>Actions</strong></th>
                     </tr>
                     </thead>
                     <tbody>
-                    {% for user in users %}
+                    {% for user in page_obj %}
                         <tr>
                             <td class="text-center">{{ forloop.counter }}</td>
                             <td class="text-center">{{ user.username }}</td>
@@ -63,23 +63,23 @@
                     {% endfor %}
                     </tbody>
                 </table>
-            </div>
-            <div class="pagination">
-                <span class="step-links">
-                    {% if page_obj.has_previous %}
-                        <a href="?page=1">&laquo; first</a>
-                        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-                    {% endif %}
+                <div class="pagination">
+                    <span class="step-links">
+                        {% if page_obj.has_previous %}
+                            <a href="?page=1">&laquo; first</a>
+                            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                        {% endif %}
 
-                    <span class="current">
-                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                        <span class="current">
+                            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                        </span>
+
+                        {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}">next</a>
+                            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                        {% endif %}
                     </span>
-
-                    {% if page_obj.has_next %}
-                        <a href="?page={{ page_obj.next_page_number }}">next</a>
-                        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-                    {% endif %}
-                </span>
+                </div>
             </div>
         </div>
     </div>

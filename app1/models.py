@@ -40,10 +40,7 @@ class User(models.Model):
 class Orders(models.Model):
     user_id = models.BigIntegerField()
     phone_number = models.CharField(max_length=50)
-    quantity = models.IntegerField()
-    image = models.ImageField()
-    product = models.CharField(max_length=256)
-    ctg = models.CharField(max_length=256)
+    product = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

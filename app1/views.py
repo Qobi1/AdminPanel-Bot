@@ -5,7 +5,7 @@ from .forms import ProductForm, CategoryForm, MessageForm
 from django.db.models import Q
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from telegrambot.views import send_message
+# from telegrambot.views import send_message
 from telegram.ext import CallbackContext
 from telegram import Update
 # Create your views here.
@@ -29,9 +29,15 @@ def product_list(request):
     if request.POST:
         search = request.POST.get('search', '')
         products = Product.objects.filter(Q(ctg__name__icontains=search) | Q(name__icontains=search)).order_by('-pk')
-        return render(request, 'product/list.html', {'products': products, 'search': search})
+        paginator = Paginator(products, 15)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        return render(request, 'product/list.html', {'products': products, 'search': search, 'page_obj': page_obj})
     products = Product.objects.all().order_by('-pk')
-    return render(request, 'product/list.html', {'products': products})
+    paginator = Paginator(products, 15)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'product/list.html', {'products': products, 'page_obj': page_obj})
 
 
 @login_required
@@ -70,9 +76,15 @@ def category_list(request):
     if request.POST:
         search = request.POST.get('search', '')
         ctgs = Category.objects.filter(name__icontains=search).values().order_by('-pk')
-        return render(request, 'category/list.html', {'ctgs': ctgs, 'search': search})
+        paginator = Paginator(ctgs, 15)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        return render(request, 'category/list.html', {'ctgs': ctgs, 'search': search, 'page_obj': page_obj})
     ctgs = Category.objects.all().order_by('-pk')
-    return render(request, 'category/list.html', {'ctgs': ctgs})
+    paginator = Paginator(ctgs, 15)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'category/list.html', {'ctgs': ctgs, 'page_obj': page_obj})
 
 
 @login_required
@@ -139,10 +151,16 @@ def message_add(request, pk=None):
 def order_list(request):
     if request.POST:
         search = request.POST.get('search', '')
-        orders = Orders.objects.filter(Q(product__icontains=search) | Q(ctg__icontains=search)).values().order_by('-pk')
-        return render(request, 'orders/list.html', {'orders': orders, 'search': search})
+        orders = Orders.objects.filter(Q(product__icontains=search)).values().order_by('-pk')
+        paginator = Paginator(orders, 15)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        return render(request, 'orders/list.html', {'orders': orders, 'search': search, 'page_obj': page_obj})
     orders = Orders.objects.all().order_by('-pk')
-    return render(request, 'orders/list.html', {'orders': orders})
+    paginator = Paginator(orders, 15)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'orders/list.html', {'orders': orders, 'page_obj': page_obj})
 
 
 @login_required
@@ -163,10 +181,13 @@ def order_details(request, pk):
 def user_list(request):
     if request.POST:
         search = request.POST.get('search', '')
-        users = User.objects.filter(Q(name__icontains=search) | Q(phone_number__icontains=search) | Q(company_name__icontains=search)).values().order_by('-pk')
-        return render(request, 'users/list.html', {'users': users, 'search': search})
+        users = User.objects.filter(Q(username__icontains=search) | Q(phone_number__icontains=search)).values().order_by('-pk')
+        paginator = Paginator(users, 50)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        return render(request, 'users/list.html', {'users': users, 'search': search, 'page_obj': page_obj})
     users = User.objects.all().order_by('-pk')
-    paginator = Paginator(users, 2)
+    paginator = Paginator(users, 50)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, 'users/list.html', {'users': users, 'page_obj': page_obj})

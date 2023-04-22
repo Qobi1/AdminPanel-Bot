@@ -6,15 +6,41 @@ def dictionary(language, command):
     dict = {
         "🇺🇿O'zbek": {
             'mainmenu': ['🛍Buyurtma berish', '📦Mening buyurtmalarim', '⚙Sozlamalar', 'ℹBiz haqimizda', '✍Izoh yozib qoldirish'],
-            'greeting': f'Salom ',
+            'greeting': 'Salom ',
             'ctg': "Kategoriyalardan birini tanlang",
             'opinion': "O'z fikringizni yozib qoldiring!",
-            'choose_one': "❌Xatolik. Berilganlardan birini tanlang!👇",
+            'choose_one': "Berilganlardan birini tanlang!👇",
             'options': ['📥Savatcha', '🛒Buyurtmani yuborish', '⬅Orqaga', '🏠Bosh Menu'],
-            'reply': ['Nomi', 'Malumot', 'Narxi']
+            'reply': ['<strong>Nomi</strong>', '<strong>Malumot</strong>', '<strong>Narxi</strong>'],
+            'bin': ['⬅Orqaga', "🔄O'chirish", "🛒Buyurtmani yuborish"],
+            'thanks': "Bildirgan fikringiz uchun minnatdormiz",
+            'empty': 'Sizda hechqanday buyurtmalar yo\'q',
+            'contact': "Telefon raqamingizni yuboring👇",
+            'extra': "Mahsulot savatchaga qo'shildi. Yana biror nma hohlaysizmi",
+            'delete': "❌ Mahsulot nomi - savatdan olib tashlash\n🔄 O'chirish - savatni bo'shatish",
+            'price': ['Dastavka', 'Umumiy'],
+            'empty_bin': "Sizning savatingizda hechnima yo'q",
+            'location': "Manzilingizni kriting!👇",
+            'final_step': "Xaridingiz uchun minatdorchilik bildiramz. Biz siz blan bog'lanamiz"
         },
         '🇷🇺Русский': {
-
+            'mainmenu': ['🛍 Заказать', '📦 Мои заказы', '⚙Настройки', 'ℹО нас', '✍Обратная связь'],
+            'greeting': 'Привет',
+            'ctg': 'Выберите одну из категорий',
+            'opinion': 'Напишите свое мнение!',
+            'choose_one': 'Не найдено товара с таким названием',
+            'options': ['📥 Корзина', '🛒Отправка заказа', '⬅Назад', '🏠Главное меню'],
+            'reply': ['<strong>Имя</strong>', '<strong>Информация</strong>', '<strong>Цена</strong>'],
+            "bin": ['⬅Назад', "🔄 Очистить", '🛒Отправка заказа'],
+            'thanks': 'Спасибо за ваш отзыв',
+            'empty': 'У вас нет заказов',
+            'contact': "Отправьте свой номер телефона👇",
+            'extra': 'Товар добавлен в корзину, что нибудь еще?',
+            'delete': """❌ Название продукта» - удалить из корзины\n🔄 Очистить» - полностью очистить корзину""",
+            'price': ['Доставка', 'Итого'],
+            'empty_bin': 'У вас ничего нет в корзине',
+            'location': 'Введите свой адрес!👇',
+            'final_step': 'Спасибо за покупку. Мы вам позвоним'
         }
     }
 
@@ -41,7 +67,7 @@ def buttons(type, lang=None, msg=None):
                 [KeyboardButton(ctg[i]['name']), KeyboardButton(ctg[i + 1]['name'])]
             )
         if len(ctg) % 2 != 0:
-            btn.append([KeyboardButton(ctg[-1]['name'])])
+            btn.append([KeyboardButton(ctg.last()['name'])])
         options = dictionary(lang, 'options')
         for i in range(0, len(options), 2):
             btn.append(
@@ -65,6 +91,13 @@ def buttons(type, lang=None, msg=None):
             btn.append([KeyboardButton(f'{i}'), KeyboardButton(f'{i + 1}'), KeyboardButton(f"{i + 2}")])
         btn.append([KeyboardButton(dictionary(lang, 'options')[0]), KeyboardButton(dictionary(lang, 'options')[2])])
     elif type == 'back':
-        btn = [[KeyboardButton(dictionary(lang, 'all')[2])]]
-
+        btn = [[KeyboardButton(dictionary(lang, 'options')[2])]]
+    elif type == 'delete':
+        for i in msg:
+            btn.append([KeyboardButton(f"❌ {i}")])
+        function = dictionary(lang, 'bin')
+        btn.append([KeyboardButton(function[0]), KeyboardButton(function[1])])
+        btn.append([KeyboardButton(function[2])])
+    elif type == "location":
+        btn.append([KeyboardButton('📍Lokatsiya', request_location=True)])
     return ReplyKeyboardMarkup(btn, resize_keyboard=True)
