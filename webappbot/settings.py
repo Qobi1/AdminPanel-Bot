@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'telegrambot',
     'app1',
-    'corsheaders'
+    'corsheaders',
+    'whitenoise.runserver_nostatic',
 ]
 
 MIDDLEWARE = [
@@ -50,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = 'webappbot.urls'
@@ -143,9 +145,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = 'ctg_list'
 LOGOUT_REDIRECT_URL = 'index'
 
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 DELIVERY_PRICE = 20000
 USER_ID = 895126630
-TOKEN = "6166820369:AAEvfCbisji-1VJfeCbt53ylELALT8-t5-Q"
+TOKEN = "5028779716:AAHPX6MXluEDtwPUHfoaG17SbZcqI2rpejw"
 
 CSRF_TRUSTED_ORIGINS = ['https://web-production-4334.up.railway.app/']
 
