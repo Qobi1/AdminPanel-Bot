@@ -5,9 +5,10 @@ from .forms import ProductForm, CategoryForm, MessageForm
 from django.db.models import Q
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-# from telegrambot.views import send_message
+from telegram import Update, Bot
+from webappbot.settings import TOKEN
+from telegrambot.views import send_message
 from telegram.ext import CallbackContext
-from telegram import Update
 # Create your views here.
 
 
@@ -137,11 +138,12 @@ def message_delete(request, pk):
 
 
 @login_required
-def message_add(request, pk=None):
+def message_add(request):
     form = MessageForm()
     if request.POST:
         form = MessageForm(request.POST, request.FILES)
         if form.is_valid():
+            send_message(Update, CallbackContext)
             form.save()
         return redirect('message_list')
     return render(request, 'message/forms.html', {'form': form})

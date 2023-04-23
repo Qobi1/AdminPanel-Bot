@@ -235,3 +235,13 @@ def message(client, products=None, phone=None):
         function = dictionary(client.language, 'price')
         result += f"{function[0]}: {DELIVERY_PRICE} so'm\n\n\n{function[1]}: {prices + DELIVERY_PRICE} so'm\n\n"
         return result
+
+
+async def send_message(update: Update, context: CallbackContext):
+    users = User.objects.all()
+    for user in users:
+        try:
+            await context.bot.send_message(user.user_id, "salom")
+        except:
+            pass
+
