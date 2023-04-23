@@ -36,10 +36,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'whitenoise.runserver_nostatic',
     'telegrambot',
     'app1',
     'corsheaders',
-    'whitenoise.runserver_nostatic',
 ]
 
 MIDDLEWARE = [
@@ -89,10 +89,10 @@ DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
 #         'NAME': 'railway',
-#         'USER': 'postgres',
+#         'USER': 'postgres1',
 #         'PASSWORD': 'pbDJOFFF4aPuP55oiDBW',
-#         'HOST': 'containers-us-west-102.railway.app',
-#         'PORT': '5701',
+#         'HOST': '127.0.0.1',
+#         'PORT': '5432',
 #     }
 # }
 
@@ -149,9 +149,11 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 DELIVERY_PRICE = 20000
 USER_ID = 895126630
-TOKEN = "5028779716:AAHPX6MXluEDtwPUHfoaG17SbZcqI2rpejw"
 
-CSRF_TRUSTED_ORIGINS = ['https://web-production-4334.up.railway.app/']
+TOKEN = "5028779716:AAHPX6MXluEDtwPUHfoaG17SbZcqI2rpejw"
+# TOKEN = "6166820369:AAEvfCbisji-1VJfeCbt53ylELALT8-t5-Q" # TEST
+
+CSRF_TRUSTED_ORIGINS = ['https://web-production-4334.up.railway.app']
 
 SESSION_COOKIE_AGE = 60 * 15  # Automatically logs out after 15 minutes
 SESSION_SAVE_EVERY_REQUEST = True

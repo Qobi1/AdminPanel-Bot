@@ -1,3 +1,5 @@
+from django.db import connection
+
 from .text import buttons, dictionary
 from telegram.ext import CallbackContext
 from telegram import Update
@@ -5,10 +7,24 @@ from app1.models import User, Orders, Category, Product
 from webappbot.settings import DELIVERY_PRICE, USER_ID
 
 
+# def dictfetchone(cursor):
+#     row = cursor.fetchone()
+#     if row is None:
+#         return False
+#     columns = [col[0] for col in cursor.description]
+#     return dict(zip(columns, row))
+
+
 # Function for start command
 async def start(update: Update, context: CallbackContext):
     user = update.effective_user
+    # print(User.objects.filter(user_id=user.id).query)
     client = User.objects.filter(user_id=user.id).first()
+    # with connection.cursor() as cursor:
+    #     cursor.execute('Select * from app1_user where user_id=%s', [user.id])
+    #     client = dictfetchone(cursor)
+    # print(client)
+
     # checks whether user is in Database
     # data will be created, if user doesn't exist
     if client is None:
@@ -59,7 +75,12 @@ async def received_message(update: Update, context: CallbackContext):
         await update.message.reply_text(result, parse_mode='HTML', reply_markup=buttons(type='delete', msg=products, lang=client.language))
         return 0
     elif msg == dictionary(client.language, 'options')[1]:
-        if client.phone_number is None:
+        result = message(client, products)
+        if result == "":
+            await update.message.reply_text(dictionary(client.language, 'empty_bin'),
+                                            reply_markup=buttons(type='ctg', lang=client.language))
+            return 0
+        elif client.phone_number is None:
             await update.message.reply_text(dictionary(client.language, 'contact'), reply_markup=buttons(type='contact'))
             User.objects.filter(user_id=user.id).update(state=6)
             return 0
