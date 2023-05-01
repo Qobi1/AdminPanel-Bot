@@ -7,23 +7,23 @@ from app1.models import User, Orders, Category, Product
 from webappbot.settings import DELIVERY_PRICE, USER_ID
 
 
-def dictfetchone(cursor):
-    row = cursor.fetchone()
-    if row is None:
-        return False
-    columns = [col[0] for col in cursor.description]
-    return dict(zip(columns, row))
+# def dictfetchone(cursor):
+#     row = cursor.fetchone()
+#     if row is None:
+#         return False
+#     columns = [col[0] for col in cursor.description]
+#     return dict(zip(columns, row))
 
 
 # Function for start command
 async def start(update: Update, context: CallbackContext):
     user = update.effective_user
     # print(User.objects.filter(user_id=user.id).query)
-    # client = User.objects.filter(user_id=user.id).first()
-    with connection.cursor() as cursor:
-        cursor.execute('Select * from app1_user where user_id=%s', [user.id])
-        client = dictfetchone(cursor)
-    print(client)
+    client = User.objects.filter(user_id=user.id).first()
+    # with connection.cursor() as cursor:
+    #     cursor.execute('Select * from app1_user where user_id=%s', [user.id])
+    #     client = dictfetchone(cursor)
+    # print(client)
 
     # checks whether user is in Database
     # data will be created, if user doesn't exist
