@@ -2,10 +2,10 @@ from django.db import connection
 
 from .text import buttons, dictionary
 from telegram.ext import CallbackContext
-from telegram import Update
+from telegram import Update, Bot
+from webappbot.settings import TOKEN
 from app1.models import User, Orders, Category, Product
 from webappbot.settings import DELIVERY_PRICE, USER_ID
-
 
 # def dictfetchone(cursor):
 #     row = cursor.fetchone()
@@ -18,12 +18,7 @@ from webappbot.settings import DELIVERY_PRICE, USER_ID
 # Function for start command
 async def start(update: Update, context: CallbackContext):
     user = update.effective_user
-    # print(User.objects.filter(user_id=user.id).query)
     client = User.objects.filter(user_id=user.id).first()
-    # with connection.cursor() as cursor:
-    #     cursor.execute('Select * from app1_user where user_id=%s', [user.id])
-    #     client = dictfetchone(cursor)
-    # print(client)
 
     # checks whether user is in Database
     # data will be created, if user doesn't exist
@@ -201,7 +196,7 @@ async def received_contact_location(update: Update, context: CallbackContext):
         await context.bot.sendLocation(chat_id=USER_ID, longitude=location.longitude, latitude=location.latitude)
         result = message(client, phone=client.phone_number)
         order_number = Orders.objects.create(user_id=user.id, phone_number=client.phone_number, product=result[1])
-        await context.bot.send_message(chat_id=user.id, text=f"<strong>#Buyurtma raqami</strong>: {order_number.id}\n\n{result[0]}", parse_mode='HTML')
+        await context.bot.send_message(chat_id=USER_ID, text=f"<strong>#Buyurtma raqami</strong>: {order_number.id}\n\n{result[0]}", parse_mode='HTML')
         User.objects.filter(user_id=user.id).update(state=2, log={'order': 0, 'ctg': ''})
 
 
@@ -237,11 +232,13 @@ def message(client, products=None, phone=None):
         return result
 
 
-async def send_message(update: Update, context: CallbackContext):
-    users = User.objects.all()
-    for user in users:
-        try:
-            await context.bot.send_message(user.user_id, "salom")
-        except:
-            pass
-
+async def send_message(update: Update, context: CallbackContext, request):
+    users = User.objects.all().values()
+    bot = Bot(TOKEN)
+    if request.FILES:
+        for user in users:
+            try:
+                await bot.send_message(chat_id=user['user_id'], text=request.POST['text'], parse_mode='HTML')
+                await bot.send_video(chat_id=user['user_id'], video=open(f"media/{request.FILES['image']}", 'rb'), caption=request.POST['text'], parse_mode='HTML')
+            except Exception as e:
+                print(e)

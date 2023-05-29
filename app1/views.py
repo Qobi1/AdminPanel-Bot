@@ -5,10 +5,12 @@ from .forms import ProductForm, CategoryForm, MessageForm
 from django.db.models import Q
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+import asyncio
 from telegram import Update, Bot
 from webappbot.settings import TOKEN
 from telegrambot.views import send_message
 from telegram.ext import CallbackContext
+from asgiref.sync import async_to_sync
 # Create your views here.
 
 
@@ -143,7 +145,8 @@ def message_add(request):
     if request.POST:
         form = MessageForm(request.POST, request.FILES)
         if form.is_valid():
-            send_message(Update, CallbackContext)
+            asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+            asyncio.run(send_message(Update, CallbackContext, request))
             form.save()
         return redirect('message_list')
     return render(request, 'message/forms.html', {'form': form})
