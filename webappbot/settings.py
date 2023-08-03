@@ -150,7 +150,7 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 DELIVERY_PRICE = 20000
 USER_ID = 895126630
 
-TOKEN = "5028779716:AAFstqQE3Sm3ybTgi4S23wL3q0pmVDETeGo"
+TOKEN = "6166820369:AAEvfCbisji-1VJfeCbt53ylELALT8-t5-Q"
 
 CSRF_TRUSTED_ORIGINS = ['https://web-production-4334.up.railway.app']
 
